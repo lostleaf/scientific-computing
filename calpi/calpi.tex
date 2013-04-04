@@ -284,6 +284,42 @@ end
 	实验证明，随机算法通常难以保证精度，并且计算结果的误差时大时小\\
 
 \section{实验任务5}
+	利用积分
+	$$\int_0^{\frac{\pi}{2}}\mathrm{sin}^nx\mathrm{d}x=\dfrac{(n-1)!!}{n!!}\cdot{}\dfrac{\pi}{2},\quad{}n\text{为奇数}$$
+	
+	推导公式
+	$$\dfrac{\pi}{2}=\dfrac{2}{1}\cdot\dfrac{2}{3}\cdot\dfrac{4}{3}\cdot\dfrac{4}{5}\cdot\cdots\cdot\dfrac{2n}{2n-1}\cdot\dfrac{2n}{2n+1}$$
+	用此公式计算的近似值，效果如何？
+	
+	证明：\\
+	$\because x\in{}\left(0,\dfrac{\pi}{2}\right)$时,$0<\mathrm{sin}x<1$\\
+	$\therefore \forall{n\in{\mathbf{N^*}}},\mathrm{sin}^{2n+1}x<\mathrm{sin}^{2n}x<\mathrm{sin}^{2n-1}x$\\
+	$\therefore \int_0^{\frac{\pi}{2}}\mathrm{sin}^{2n+1}x\mathrm{d}x<\int_0^{\frac{\pi}{2}}\mathrm{sin}^{2n}x\mathrm{d}x<\int_0^{\frac{\pi}{2}}\mathrm{sin}^{2n-1}x\mathrm{d}x$\\
+	由分部积分，得
+	$$\frac{(2n)!!}{(2n+1)!!}<\frac{(2n-1)!!}{(2n)!!}\cdot\frac{\pi}{2}<\frac{(2n-2)!!}{(2n-1)!!}$$
+	变形，得
+	$$\left(\frac{2n}{2n+1}\right)\frac{\pi}{2}<\frac{((2n)!!)^2}{(2n+1)((2n-1)!!)^2}<\frac{\pi}{2}$$
+	由夹逼定理
+	$$\lim_{n\to\infty}\frac{1}{2n+1}\left(\frac{2\cdot{4}\cdot\cdots\cdot{(2n)}}{1\cdot{3}\cdot\cdots\cdot{(2n-1)}}\right)=\dfrac{\pi}{2}$$
+	整理之，得
+	$$\dfrac{\pi}{2}=\dfrac{2}{1}\cdot\dfrac{2}{3}\cdot\dfrac{4}{3}\cdot\dfrac{4}{5}\cdot\cdots\cdot\dfrac{2n}{2n-1}\cdot\dfrac{2n}{2n+1}$$
+	
+	MATLAB代码:
+	
+	\begin{lstlisting}[language=matlab]
+function task5(n)
+    prod = 1;
+    for i=1:n
+        prod = prod * ( 4 * i^2) / ( 4 * i^2 - 1 );
+    end
+    vpa(2 * prod,20)
+end	
+	\end{lstlisting}
+	
+	当$n=1000000$时，$\pi=3.141591868192467718$，精确到小数点后5位\\
+	可知该方法精度较低
+
+\section{实验任务6}
 	$e$是一个重要的超越数\\
 	$$e=\lim_{n\to\infty}\left(1+\dfrac{1}{n}\right)^n$$
 	$$e=1+1+\dfrac{1}{2!}+\cdots+\dfrac{1}{n!}+\dfrac{e^\theta}{(n+1)!}$$
@@ -292,9 +328,10 @@ end
 	试用上述公式或其他方法近似计算$e$
 	
 	使用公式$\displaystyle e=\lim_{n\to\infty}\left(1+\dfrac{1}{n}\right)^n$\\
+	\newpage
 	MATLAB代码:
 	\begin{lstlisting}[language=matlab]
-function task5_1( n )   
+function task6_1( n )   
     e = (1 + 1/n) ^ n;
     vpa(e, 50)
 end
@@ -303,9 +340,10 @@ end
 	取$n=10000$时，得$e=2.718145927$，精确到小数点后3位.
 	
 	使用公式$e=1+1+\dfrac{1}{2!}+\cdots+\dfrac{1}{n!}+\dfrac{e^\theta}{(n+1)!}$\\
+	
 	MATLAB代码:
 	\begin{lstlisting}[language=matlab]
-function task5_2( n )
+function task6_2( n )
     e = sym(1);
     temp = 1;
     for i = 1:n
@@ -317,6 +355,15 @@ end
 	\end{lstlisting}
 	取$n=10$，得$e=2.718281801$，可以精确到小数点后7位\\
 	对比可知，级数法精度更高.	
+\section{总结}
+	本文通过多种方法求$\pi$，每种方法精确性各有不同\\
+	对于利用级数或连乘的方法中，Machin公式精度最高\\
+	对于使用数值积分的方法，Simpson公式精度最高\\
+	对于使用随机算法的方法，精度都比较低，且误差难以控制\\
+	本文还对$e$进行求值，得知级数法精度最高\\
+\section{分工}
+	李青林：负责实验1,2,3,5和报告编写\\
+	郑辉煌：负责实验4,5,6
 \end{CJK*}
 \end{document}
 

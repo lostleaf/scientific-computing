@@ -1,4 +1,4 @@
-function task5_2( n )
+function task6_2( n )
     e = sym(1);
     temp = 1;
     for i = 1:n
