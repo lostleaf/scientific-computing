@@ -1,0 +1,149 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\documentclass[12pt]{article}
+\usepackage{amssymb}
+\usepackage{amsmath,amssymb,CJK}
+\usepackage{graphicx}
+\usepackage{subfigure}
+\usepackage{listings}
+\usepackage{enumerate}
+
+\openup 7pt\pagestyle{plain} \topmargin -40pt \textwidth
+14.5cm\textheight 21.5cm
+\parskip .09 truein
+\baselineskip 4pt\lineskip 4pt \setcounter{page}{1}
+\def\a{\alpha}\def\b{\beta}\def\d{\delta}\def\D{\Delta}\def\fs{\footnotesize}
+\def\g{\gamma}
+\def\G{\Gamma}\def\l{\lambda}\def\L{\Lambda}\def\o{\omiga}\def\p{\psi}
+\def\se{\subseteq}\def\seq{\subseteq}\def\Si{\Sigma}\def\si{\sigma}\def\vp{\varphi}\def\es{\varepsilon}
+\def\sc{\scriptstyle}\def\ssc{\scriptscriptstyle}\def\dis{\displaystyle}
+\def\cl{\centerline}\def\ll{\leftline}\def\rl{\rightline}\def\nl{\newline}
+\def\ol{\overline}\def\ul{\underline}\def\wt{\widetilde}\def\wh{\widehat}
+\def\rar{\rightarrow}\def\Rar{\Rightarrow}\def\lar{\leftarrow}
+\def\Lar{\Leftarrow}\def\Rla{\rightleftarrow}\def\bs{\backslash}
+\def\ra{\rangle}\def\la{\langle}\def\hs{\hspace*}\def\rb{\raisebox}
+\def\ni{\noindent}\def\hi{\hangindent}\def\ha{\hangafter}
+\def\vs{\vspace*}
+\def\hom#1{\mbox{\rm Hom($#1,#1$)}}
+\def\thebeg{\vskip8pt\par\ni}
+\def\theend{\vskip5pt\par}
+\def\chabeg{\pagebreak\par}
+\def\chaend{\vskip20pt\par}
+\def\secbeg{\vskip15pt\par}
+\def\secend{\vskip10pt\par}
+\def\exebeg{\vskip10pt}
+\def\exeend{\vskip6pt}
+\def\undot#1{\mbox{$\mbox{#1}\hs{-1.5ex}_{_{\dis\centerdot}}\,\,$}}
+\def\qed{\hfill\mbox{$\Box$}}
+\def\C{\mathbb{C}}
+\def\Q{\mathbb{Q}}
+\def\ii{\mbox{\,{\bf i}\,}}
+\def\jj{\mbox{\,{\bf j}\,}}
+\def\AA{{\cal A}}
+\def\BB{{\cal B}}
+\def\DD{{\cal D}}
+\def\EE{{\mbox{\bf 1}}}
+\def\OO{{\mbox{\bf 0}}}
+\def\kk{{\mbox{\bf k}}}
+\def\R{\mathbb{R}}
+\def\F{\mathbb{F}{\ssc\,}}
+%\def\similar{\rb{-4pt}{\mbox{\,\~\,}}}
+\def\similar{\backsim}
+\def\Llra{\Longleftrightarrow}
+\def\Lra{\Longrightarrow}
+\def\Lla{\Longleftarrow}
+\def\mat#1#2{\mbox{$\left(\begin{array}{#1}#2\end{array}\right)$}}
+\def\det#1#2{\mbox{$\left|\begin{array}{#1}#2\end{array}\right|$}}
+\def\eset{\emptyset}
+\parindent=5ex
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{1ex plus 0.5ex minus 0.2ex}
+\newtheorem{Example}{\text{例}}
+\begin{CJK*}{UTF8}{gbsn}
+
+\date{}
+\title{P239第1题实验报告}
+\author{李青林(5110309074)}
+\begin{document}
+\maketitle
+
+\begin{enumerate}
+\item
+解方程$x^2-3x+2-e^x=0$\\
+\begin{enumerate}
+\item 斯特芬森加速迭代\\
+$\varphi(x)=\ln(x^2-3x+2)$\\
+\begin{tabular}{|c|c|}
+\hline 
+$k$ & $x_k$ \\ 
+\hline
+1 & 0.500000000000000 \\
+\hline 
+2 &   0.212191160008787  \\ 
+\hline 
+3 &   0.256087960816817   \\ 
+\hline 
+4 &  0.257528819608135   \\ 
+\hline 
+5 & 0.257530285438346 \\ 
+\hline 
+\end{tabular} 
+
+\item 牛顿法\\
+$x_{k+1}=x_k-\dfrac{x^2-3x+2-e^x}{2x-3-e^x}$\\
+\begin{tabular}{|c|c|}
+\hline 
+$k$ & $x_k$ \\ 
+\hline 
+1 & 0.500000000000000 \\ 
+\hline 
+2 & 0.253688702418292 \\ 
+\hline 
+3 & 0.257528900794710 \\ 
+\hline 
+4 & 0.257530285439682 \\ 
+\hline 
+\end{tabular} 
+
+\end{enumerate}
+
+\item
+解方程$x^3+2x^2+10x-20=0$\\
+\begin{enumerate}
+\item 斯特芬森加速迭代\\
+$\varphi(x)=\dfrac{20-x^3-2x^2}{10}$\\
+\begin{tabular}{|c|c|}
+\hline 
+$k$ & $x_k$ \\ 
+\hline
+1 &    1.500000000000000\\
+\hline 
+2 &     1.362859527908831 \\ 
+\hline 
+3 &     1.368796780568047    \\ 
+\hline 
+4 &   1.368808107780163 \\ 
+\hline 
+\end{tabular} 
+
+\item 牛顿法\\
+$x_{k+1}=x_k-\dfrac{x^3+2x^2+10x-20}{3x^2+4x+10}$\\
+\begin{tabular}{|c|c|}
+\hline 
+$k$ & $x_k$ \\ 
+\hline 
+1 &    1.500000000000000  \\ 
+\hline 
+2 &  1.373626373626374  \\ 
+\hline 
+3 &  1.368814819623964\\ 
+\hline 
+4 &  1.368808107834412\\ 
+\hline 
+\end{tabular} 
+
+\end{enumerate}
+
+\end{enumerate}
+
+\end{CJK*}
+\end{document}
