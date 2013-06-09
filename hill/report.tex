@@ -1,0 +1,264 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\documentclass[12pt]{article}
+\usepackage{amssymb}
+\usepackage{amsmath,amssymb,CJK}
+\usepackage{graphicx}
+\usepackage{subfigure}
+\usepackage{listings}
+\usepackage{enumerate}
+
+\openup 7pt\pagestyle{plain} \topmargin -40pt \textwidth
+14.5cm\textheight 21.5cm
+\parskip .09 truein
+\baselineskip 4pt\lineskip 4pt \setcounter{page}{1}
+\def\a{\alpha}\def\b{\beta}\def\d{\delta}\def\D{\Delta}\def\fs{\footnotesize}
+\def\g{\gamma}
+\def\G{\Gamma}\def\l{\lambda}\def\L{\Lambda}\def\o{\omiga}\def\p{\psi}
+\def\se{\subseteq}\def\seq{\subseteq}\def\Si{\Sigma}\def\si{\sigma}\def\vp{\varphi}\def\es{\varepsilon}
+\def\sc{\scriptstyle}\def\ssc{\scriptscriptstyle}\def\dis{\displaystyle}
+\def\cl{\centerline}\def\ll{\leftline}\def\rl{\rightline}\def\nl{\newline}
+\def\ol{\overline}\def\ul{\underline}\def\wt{\widetilde}\def\wh{\widehat}
+\def\rar{\rightarrow}\def\Rar{\Rightarrow}\def\lar{\leftarrow}
+\def\Lar{\Leftarrow}\def\Rla{\rightleftarrow}\def\bs{\backslash}
+\def\ra{\rangle}\def\la{\langle}\def\hs{\hspace*}\def\rb{\raisebox}
+\def\ni{\noindent}\def\hi{\hangindent}\def\ha{\hangafter}
+\def\vs{\vspace*}
+\def\hom#1{\mbox{\rm Hom($#1,#1$)}}
+\def\thebeg{\vskip8pt\par\ni}
+\def\theend{\vskip5pt\par}
+\def\chabeg{\pagebreak\par}
+\def\chaend{\vskip20pt\par}
+\def\secbeg{\vskip15pt\par}
+\def\secend{\vskip10pt\par}
+\def\exebeg{\vskip10pt}
+\def\exeend{\vskip6pt}
+\def\undot#1{\mbox{$\mbox{#1}\hs{-1.5ex}_{_{\dis\centerdot}}\,\,$}}
+\def\qed{\hfill\mbox{$\Box$}}
+\def\C{\mathbb{C}}
+\def\Q{\mathbb{Q}}
+\def\ii{\mbox{\,{\bf i}\,}}
+\def\jj{\mbox{\,{\bf j}\,}}
+\def\AA{{\cal A}}
+\def\BB{{\cal B}}
+\def\DD{{\cal D}}
+\def\EE{{\mbox{\bf 1}}}
+\def\OO{{\mbox{\bf 0}}}
+\def\kk{{\mbox{\bf k}}}
+\def\R{\mathbb{R}}
+\def\F{\mathbb{F}{\ssc\,}}
+%\def\similar{\rb{-4pt}{\mbox{\,\~\,}}}
+\def\similar{\backsim}
+\def\Llra{\Longleftrightarrow}
+\def\Lra{\Longrightarrow}
+\def\Lla{\Longleftarrow}
+\def\mat#1#2{\mbox{$\left(\begin{array}{#1}#2\end{array}\right)$}}
+\def\det#1#2{\mbox{$\left|\begin{array}{#1}#2\end{array}\right|$}}
+\def\eset{\emptyset}
+\parindent=5ex
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{1ex plus 0.5ex minus 0.2ex}
+\newtheorem{Example}{\text{例}}
+\begin{CJK*}{UTF8}{gbsn}
+
+\date{}
+\title{Hill密码的加密、解密与破译}
+\author{李青林, 5110309074\\郑辉煌, 5110209289\\}
+\begin{document}
+\maketitle
+\section*{实验任务1}
+\subsection*{问题描述}
+在问题(2)中，若已知密文前4个字母OJWP分别代表TACO，问能否将此段密码破译？
+\subsection*{解答}
+密文：
+$\begin{pmatrix}
+\text{O}\\ \text{J}
+\end{pmatrix}\longrightarrow$
+明文:
+$\begin{pmatrix}
+\text{T}\\ \text{A}
+\end{pmatrix}$, 
+密文：
+$\begin{pmatrix}
+\text{W}\\ \text{P}
+\end{pmatrix}\longrightarrow$
+明文:
+$\begin{pmatrix}
+\text{C}\\ \text{O}
+\end{pmatrix}$\\
+
+$\begin{pmatrix}
+\text{O}\\ \text{J}
+\end{pmatrix}\leftrightarrow\beta_1=
+\begin{pmatrix}
+15\\10
+\end{pmatrix}=A\alpha_1\Leftrightarrow\alpha_1=
+\begin{pmatrix}
+20\\1
+\end{pmatrix}\leftrightarrow
+\begin{pmatrix}
+\text{T}\\ \text{A}
+\end{pmatrix}
+$\\
+$\begin{pmatrix}
+\text{W}\\ \text{P}
+\end{pmatrix}\leftrightarrow\beta_1=
+\begin{pmatrix}
+23\\16
+\end{pmatrix}=A\alpha_1\Leftrightarrow\alpha_1=
+\begin{pmatrix}
+3\\15
+\end{pmatrix}\leftrightarrow
+\begin{pmatrix}
+\text{C}\\ \text{O}
+\end{pmatrix}$\\
+
+$\textrm{det}(\beta_1,\beta_2)=
+\begin{vmatrix}
+15 & 23\\
+10 & 16\\
+\end{vmatrix}=10
+$\\
+$\textrm{gcd}(10,26)=2 \Rightarrow \beta_1,\beta_2\text{在模26下线性相关}$\\
+因此无法解密\\
+\newpage
+\section*{实验任务2}
+\subsection*{问题描述}
+设英文$26$个字母以下面乱序表与$Z_{26}$中的整数对应：
+
+\begin{tabular}{|c|c|c|c|c|c|c|c|c|c|c|c|c|}
+\hline 
+A & B & C & D & E & F & G & H & I & J & K & L & M \\ 
+\hline 
+5 & 23 & 2 & 20 & 10 & 15 & 8 & 4 & 18 & 25 & 0 & 16 & 13 \\ 
+\hline 
+N & O & P & Q & R & S & T & U & V & W & X & Y & Z \\ 
+\hline 
+7 & 3 & 1 & 19 & 6 & 12 & 24 & 21 & 17 & 14 & 22 & 11 & 9 \\ 
+\hline 
+\end{tabular} 
+
+\begin{enumerate}
+\item
+设$A=
+\begin{pmatrix}
+8 & 6 & 9 & 5\\
+6 & 9 & 5 & 10\\
+5 & 8 & 4 & 9\\
+10 & 6 & 11 & 4\\
+\end{pmatrix}
+$, 验证矩阵$A$能否作为$\text{Hill}_4$密码体制的加密矩阵。
+\item
+设明文为\\
+HILL CRYPTOGRAPHIC SYSTEM IS TRADITIONAL\\
+利用上面的表值与加密矩阵给此明文加密，并将得到的密文解密.
+\item
+已知在上述给定表值下的一段$\text{Hill}_4$密码的密文为\\
+JCOW ZLVB DVLE QMXC\\
+对应的明文为\\
+DELAY OPERATIONSU\\
+能否确定加密矩阵？
+\end{enumerate}
+
+\subsection*{解答}
+\begin{enumerate}
+\item 
+$\textrm{det}(A)=25\quad(\mathrm{mod}~26)$\\
+$\mathrm{gcd}(25, 26)=1\Longrightarrow A$在模26下可逆\\
+因此$A$可以作为加密矩阵\\
+
+\item
+对明文分组:\\
+HILL CRYP TOGR APHI CSYS TEMI STRA DITI ONAL\\
+构造$4$维向量\\
+$\begin{pmatrix}18\\25\\13\\13\end{pmatrix}$,
+$\begin{pmatrix}20\\12\\9\\19\end{pmatrix}$,
+$\begin{pmatrix}21\\1\\4\\12\end{pmatrix}$,
+$\begin{pmatrix}23\\19\\18\\25\end{pmatrix}$,
+$\begin{pmatrix}20\\24\\9\\24\end{pmatrix}$,
+$\begin{pmatrix}21\\15\\7\\25\end{pmatrix}$,
+$\begin{pmatrix}24\\21\\12\\23\end{pmatrix}$,
+$\begin{pmatrix}10\\25\\21\\25\end{pmatrix}$,
+$\begin{pmatrix}1\\3\\23\\13\end{pmatrix}$\\
+用$A$左乘得\\
+$\begin{pmatrix}8\\8\\17\\5\end{pmatrix}$,
+$\begin{pmatrix}18\\21\\13\\5\end{pmatrix}$,
+$\begin{pmatrix}10\\15\\3\\22\end{pmatrix}$,
+$\begin{pmatrix}13\\25\\18\\18\end{pmatrix}$,
+$\begin{pmatrix}11\\23\\24\\19\end{pmatrix}$,
+$\begin{pmatrix}4\\0\\10\\9\end{pmatrix}$,
+$\begin{pmatrix}21\\25\\23\\18\end{pmatrix}$,
+$\begin{pmatrix}24\\16\\13\\9\end{pmatrix}$,
+$\begin{pmatrix}12\\18\\4\\21\end{pmatrix}$\\
+查表得密文为：\\
+IJMM DSZQ UPHS BQIJ DTZT UFNJ TUSB EJUJ POBM\\
+
+$A^{-1}=
+\begin{pmatrix}
+23&   20&    5&    1&\\
+2&   11&   18&    1&\\
+2&   20&    6&   25&\\
+25&    2&   22&   25&\\
+\end{pmatrix}
+$\\
+用$A^{-1}$左乘密文向量得\\
+$\begin{pmatrix}18\\25\\13\\13\end{pmatrix}$,
+$\begin{pmatrix}20\\12\\9\\19\end{pmatrix}$,
+$\begin{pmatrix}21\\1\\4\\12\end{pmatrix}$,
+$\begin{pmatrix}23\\19\\18\\25\end{pmatrix}$,
+$\begin{pmatrix}20\\24\\9\\24\end{pmatrix}$,
+$\begin{pmatrix}21\\15\\7\\25\end{pmatrix}$,
+$\begin{pmatrix}24\\21\\12\\23\end{pmatrix}$,
+$\begin{pmatrix}10\\25\\21\\25\end{pmatrix}$,
+$\begin{pmatrix}1\\3\\23\\13\end{pmatrix}$\\
+查表即可得明文
+
+\item
+对明文分组:\\
+DELA YOPE RATI ONSU\\
+明文向量:\\
+$\alpha_1=\begin{pmatrix}20\\10\\16\\5\end{pmatrix}$,
+$\alpha_2=\begin{pmatrix}11\\3\\1\\10\end{pmatrix}$,
+$\alpha_3=\begin{pmatrix}6\\5\\24\\18\end{pmatrix}$,
+$\alpha_4=\begin{pmatrix}3\\7\\12\\21\end{pmatrix}$\\
+$\mathrm{det}(\alpha_1,\alpha_2,\alpha_3,\alpha_4)=
+\begin{vmatrix}
+   25 &   9   &20&   19\\
+    2  & 16  & 17 &  13\\
+    3   &17 &  16  & 22\\
+   14   &23&   10   & 2\\
+\end{vmatrix}
+=15\quad(\mathrm{mod}~26)
+$\\
+$\mathrm{gcd}(26,15)=1\Rightarrow\alpha_1,\alpha_2,\alpha_3,\alpha_4$在模26下线性无关\\
+密文向量:\\
+$\beta_1=\begin{pmatrix}25\\2\\3\\14\end{pmatrix}$,
+$\beta_2=\begin{pmatrix}9\\16\\17\\23\end{pmatrix}$,
+$\beta_3=\begin{pmatrix}20\\17\\16\\10\end{pmatrix}$,
+$\beta_4=\begin{pmatrix}19\\13\\22\\2\end{pmatrix}$\\
+$\mathrm{det}(\beta_1,\beta_2,\beta_3,\beta_4)=
+\begin{vmatrix}
+   25 &   9   &20&   19\\
+    2  & 16  & 17 &  13\\
+    3   &17 &  16  & 22\\
+   14   &23&   10   & 2\\
+\end{vmatrix}
+=11\quad(\mathrm{mod}~26)
+$\\
+$\mathrm{gcd}(26,11)=1\Rightarrow\beta_1,\beta_2,\beta_3,\beta_4$在模26下线性无关\\
+设加密矩阵为$A$,则有$A(\alpha_1,\alpha_2,\alpha_3,\alpha_4)=(\beta_1,\beta_2,\beta_3,\beta_4)$\\
+设$C=(\alpha_1,\alpha_2,\alpha_3,\alpha_4), P=(\beta_1,\beta_2,\beta_3,\beta_4)$\\
+$A=PC^{-1}=
+\begin{pmatrix}
+    8&    6   & 9&    5\\
+    6 &   9  &  5 &  10\\
+    5  &  8 &   4  &  9\\
+   10   & 6&   11   & 4\\
+
+\end{pmatrix}
+$
+
+\end{enumerate}
+	
+
+\end{CJK*}
+\end{document}
