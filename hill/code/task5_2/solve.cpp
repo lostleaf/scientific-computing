@@ -52,7 +52,7 @@ int main()
         fscanf(fdict, "%s", dict[i]);
         length[i] = strlen(dict[i]);
     }
-    printf("%s", dict[0]);
+    // printf("%s", dict[0]);
     for (int i = 0; i < 25; ++i)
         for (int j = 0; j < 25 ; ++j)
             for (int k = 0; k < 25; ++k)

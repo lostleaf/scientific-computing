@@ -76,7 +76,7 @@ $\begin{pmatrix}
 明文:
 $\begin{pmatrix}
 \text{T}\\ \text{A}
-\end{pmatrix}$, 
+\end{pmatrix}$,
 密文：
 $\begin{pmatrix}
 \text{W}\\ \text{P}
@@ -126,16 +126,16 @@ $\textrm{gcd}(10,26)=2 \Rightarrow \beta_1,\beta_2\text{在模26下线性相关}
 设英文$26$个字母以下面乱序表与$Z_{26}$中的整数对应：
 
 \begin{tabular}{|c|c|c|c|c|c|c|c|c|c|c|c|c|}
-\hline 
-A & B & C & D & E & F & G & H & I & J & K & L & M \\ 
-\hline 
-5 & 23 & 2 & 20 & 10 & 15 & 8 & 4 & 18 & 25 & 0 & 16 & 13 \\ 
-\hline 
-N & O & P & Q & R & S & T & U & V & W & X & Y & Z \\ 
-\hline 
-7 & 3 & 1 & 19 & 6 & 12 & 24 & 21 & 17 & 14 & 22 & 11 & 9 \\ 
-\hline 
-\end{tabular} 
+\hline
+A & B & C & D & E & F & G & H & I & J & K & L & M \\
+\hline
+5 & 23 & 2 & 20 & 10 & 15 & 8 & 4 & 18 & 25 & 0 & 16 & 13 \\
+\hline
+N & O & P & Q & R & S & T & U & V & W & X & Y & Z \\
+\hline
+7 & 3 & 1 & 19 & 6 & 12 & 24 & 21 & 17 & 14 & 22 & 11 & 9 \\
+\hline
+\end{tabular}
 
 \begin{enumerate}
 \item
@@ -161,7 +161,7 @@ DELAY OPERATIONSU\\
 
 \subsection*{解答}
 \begin{enumerate}
-\item 
+\item
 $\textrm{det}(A)=25\quad(\mathrm{mod}~26)$\\
 $\mathrm{gcd}(25, 26)=1\Longrightarrow A$在模26下可逆\\
 因此$A$可以作为加密矩阵\\
@@ -258,12 +258,370 @@ $A=PC^{-1}=
 $
 
 \end{enumerate}
+\section*{实验任务3}
+    \subsection*{问题描述}
+    设已知一份密文为Hill$_{2}$密码体系，其中出现频数最高的双字母是RH和NI，而在明文语言中，出现频数最高的双字母为TH和HE，由这些信息按下表给出的表值能得到什么样的加密矩阵？
+    \begin{center}
+      \begin{tabular}{|c|c|c|c|c|c|c|c|c|c|c|c|c|}
+        \hline
+        % after \\: \hline or \cline{col1-col2} \cline{col3-col4} ...
+        A & B & C & D & E & F & G & H & I & J & K & L & M \\ \hline
+        0 & 1 & 2 & 3 & 4 & 5 & 6 & 7 & 8 & 9 & 10 & 11 & 12 \\ \hline \hline
+        N & O & P & Q & R & S & T & U & V & W & X & Y & Z \\ \hline
+        13 & 14 & 15 & 16 & 17 & 18 & 19 & 20 & 21 & 22 & 23 & 24 & 25 \\ \hline
+      \end{tabular}
+    \end{center}
+    \subsection*{解答}
+    $$
+    \begin{pmatrix}
+        R\\
+        H\\  
+    \end{pmatrix}
+    \leftrightarrow 
+    \begin{pmatrix}
+        17\\
+        7\\
+    \end{pmatrix}
+    ,
+    \begin{pmatrix}
+        N\\
+        I\\
+    \end{pmatrix}
+    \leftrightarrow
+    \begin{pmatrix}
+        13\\
+        8\\
+    \end{pmatrix}
+    $$
+    $$
+    \begin{pmatrix}
+        T\\
+        H\\
+    \end{pmatrix}
+    \leftrightarrow
+    \begin{pmatrix}
+        19\\
+        7\\
+    \end{pmatrix}
+    ,
+    \begin{pmatrix}
+        H\\
+        E\\
+    \end{pmatrix}
+    \leftrightarrow
+    \begin{pmatrix}
+        7\\
+        4\\
+    \end{pmatrix}
+    $$
+    记
+    $$ P = 
+        \begin{pmatrix}
+            17 & 13\\
+            7 & 8\\
+        \end{pmatrix},
+      C = 
+        \begin{pmatrix}
+            19 & 7\\
+            7 & 4\\
+        \end{pmatrix}
+    $$
+    设加密矩阵为$A$,则$P = AC(mod\ 26)$,所以$A = PC^{-1}(mod\ 26)$\\
+    通过matlab代码:
+    \begin{lstlisting}[language=MATLAB]
+    function Y = invmod( P, C )
+        %mod26 inverse matrix
+        %for more detail to see <<math experiments>> in page 109
+        %D = det(P);
+        D = P(2, 2) * P(1, 1) - P(1, 2) * P (2, 1);
+        if gcd(D, 26) ~= 1;
+            disp('Error');
+        else
+            for i = 1: 25
+                if mod(i * D, 26) == 1
+                    break;
+                end
+            end
+            invD = i;
+            Q(1, 1) =  P(2, 2);
+            Q(1, 2) = -P(1, 2);
+            Q(2, 1) = -P(2, 1);
+            Q(2, 2) = P(1, 1);
+            Y = mod(Q * invD, 26);
+        end
+        Y = mod(C * Y, 26);
+    end
+    \end{lstlisting}
+    上面针对课本代码的改进是防止了det(P)出现不是整数和inv(P)会有计算机数据误差情况。再通过调用：\\
+    \begin{lstlisting}[language=MATLAB]
+    >> P = [17, 13; 7, 8];
+    >> C = [19. 7; 7, 4];
+    >> A = invmod(C, P)
+    \end{lstlisting}
+    得到加密矩阵
+    $$ A = 
+        \begin{pmatrix}
+            3 & 24\\
+            24 & 25\\
+        \end{pmatrix}
+    $$
+\section*{实验任务4}
+    \subsection*{问题描述}
+        如下的密文根据课本表10.1以Hill$_{2}$加密，密文为\\
+        VIKYNOTCLKYRJQETIRECVUZLNOJTUYDIMHRCFITQ\\
+        已获知其中相邻字母LK代表字母KE，试破译这份密文。\\
+    \subsection*{解答}
+        $$
+        \begin{pmatrix}
+            L\\
+            K\\
+        \end{pmatrix}    
+        =
+        \begin{pmatrix}
+            12\\
+            11\\
+        \end{pmatrix}
+        $$
+        $$
+        \begin{pmatrix}
+            K\\
+            E\\
+        \end{pmatrix}
+        =
+        \begin{pmatrix}
+            11\\
+            5\\
+        \end{pmatrix}
+        $$
+        设解密矩阵为$B = \begin{pmatrix} x_{1} & x_{2} \\ x_{3} & x_{4} \\\end{pmatrix}$，则\\
+        $$
+        \begin{pmatrix}
+            x_{1} & x_{2} \\
+            x_{3} & x_{4} \\
+        \end{pmatrix}
+        \begin{pmatrix}
+            12 \\
+            11 \\
+        \end{pmatrix}
+        =
+        \begin{pmatrix}
+            11 \\
+            5 \\
+        \end{pmatrix}
+        (mod \ 26)
+        $$
+        从而解得通解为
+        $$
+        \begin{pmatrix}
+            x_{1} & x_{2} \\
+            x_{3} & x_{4} \\
+        \end{pmatrix}
+        =
+        \begin{pmatrix}
+            c_{1} & 1+6c_{1} \\
+            c_{2} & 17+6c_{2} \\
+        \end{pmatrix} 
+        $$
+        一开始以C++代码枚举所有可能的$c_{1}$和$c_{2}$的值，发现所有的密文第5,6个字符“NO”对应的明文都是“OU”，之后猜测明文中KE可能是汉语拼音的“可”，故看后面两个明文是不“YI”对应汉语的“以”，失败了，再转而猜测是英语，猜KE可能是MAKE的后两个字母，用C++代码验证：\\
+        \begin{lstlisting}[language=C++]
+#include <iostream>
+#include <cstdio>
+#include <cstdlib>
+
+using namespace std;
+
+const int MAXN = 200;
+char code[MAXN] = "VIKYNOTCLKYRJQETIRECVUZLNOJTUYDIMHRCFITQ";
+char ans[MAXN];
+int length;
+int count = 0;
+int getNum(char letter)
+{
+    return (letter - 'A' + 1) % 26;
+}
+
+char getLetter(int num)
+{
+    if(num == 0) return 'Z';
+    return 'A' + num - 1;
+}
+
+void printCode(int c1, int c2)
+{
+    int a1, a2, b1, b2;
+    int d1 = (1 + 6 * c1) % 26;
+    int d2 = (17 + 6 * c2) % 26;
+    for(int i = 0; i < length; i += 2)
+    {
+        b1 = getNum(code[i]);
+        b2 = getNum(code[i + 1]);
+
+        a1 = (c1 * b1 + d1 * b2) % 26;
+        a2 = (c2 * b1 + d2 * b2) % 26;
+
+        ans[i] = getLetter(a1);
+        ans[i + 1] = getLetter(a2);
+        if(code[i] == 'T' && code[i+1] == 'C')
+        {
+            if(ans[i] != 'M' || ans[i+1] != 'A') return;
+            //to see the out file, I can see ans[4] and ans[5] 
+            //must be 'O' and 'U', so
+            //guess ans[3~9] is "you make",
+            // so try it and final success!!
+        }
+        //printf("%c%c", getLetter(a1), getLetter(a2));
+    }
+    ans[length] = '\0';
+    ++count;
+    printf("%d\n", count);
+    printf(ans);
+    printf("\n");
+}
+int main()
+{
+    freopen("in.txt", "w", stdout);
+    for(length = 0; code[length] != '\0'; ++length);
+
+    for(int i = 0; i < 26; ++i)
+        for(int j = 0; j < 26; ++j)
+            printCode(i, j);
+
+    return 0;
+}
+        \end{lstlisting}
+        得到的输出结果为：\\
+        1\\
+        CANLOUMAKEAAOMEYEGTRWITHOUTBRRAKIAGEGGSS\\
+        2\\
+        CANYOUMAKEANOMELETTEWITHOUTBREAKINGEGGSS\\
+        3\\
+        CAALOUMAKENAOMRYRGGRWITHOUTBERAKVAGEGGSS\\
+        4\\
+        CAAYOUMAKENNOMRLRTGEWITHOUTBEEAKVNGEGGSS\\
+        注意到第2条，可认为是明文：Can you make an omelette without breaking eggs (最后一个s为哑字母)\\
 \section*{实验任务5}
 \subsection*{问题描述}
 若截获一下密文\\
 CKYNOHKQMAXJQBHAZWUHDAOQWXIPQZBKMPUTIPVSWSBYXKKWQHADMBDM\\
 已知它是根据Hill$_2$体制加密的，能否将它解密?
-\subsection*{解答}
+\subsection*{解答法1}
+    基于字母频数统计的方法：\\
+    查阅资料得汉语拼音的字母出现频率（\%）头几名为：\\
+    I(12.93), N(12.56), G(9.50), U(9.40), A(8.22)\\
+    英语出现频率高的为：\\
+    E(12.95), T(9.41), A(8.19), O(7.26), N(7.06)\\
+
+    统计得密文共有56个字符，故若明文是拼音，则字母出现频数应满足：
+    $$ I \approx 56 * 12.93 \% \approx 7.2 $$
+    $$ N \approx 56 * 12.56 \% \approx 7.0 $$
+    $$ G \approx 56 * 9.5 \% \approx 5.3 $$
+    $$ U \approx 56 * 9.4 \% \approx 5.3 $$
+    $$ A \approx 56 * 8.22 \% \approx 4.6 $$
+    考虑误差，现在将密文用所有可能的Hill$_{2}$解密矩阵翻译成明文，首先，明文第一个拼音中出现A,E,I,O,U的概率极小，将这部分数据删去，再将明文中I出现次数小于6个，N小于5 个，G、U、A 小于4 个的数据删去。幸运的是，在这时就得到了答案。（若此时没得到答案，则明文有可能是英语，那么对英文出现频率高的字母同理筛选）
+    下面给出C++代码：
+    \begin{lstlisting}[language=C++]
+#include <iostream>
+#include <cstdio>
+#include <cstdlib>
+
+using namespace std;
+
+const int MAXN = 200;
+char code[MAXN] = "CKYNOHKQMAXJQBHAZWUHDAOQWXIP
+QZBKMPUTIPVSWSBYXKKWQHADMBDM";
+char ans[MAXN];
+int length;
+int count = 0;
+int getNum(char letter)
+{
+    return (letter - 'A' + 1) % 26;
+}
+
+char getLetter(int num)
+{
+    if(num == 0) return 'Z';
+    return 'A' + num - 1;
+}
+
+int gcd(int x, int y)
+{
+    if(x == 0) return y;
+    return gcd(y % x, x);
+}
+bool analysis()
+{
+    int count_i = 0,count_n = 0,count_g = 0,count_a = 0,count_u = 0;
+    if(ans[0] == 'A' || ans[0] == 'E' || ans[0] == 'I' 
+       || ans[0] == 'O' || ans[0] == 'U') return false;
+    for(int i = 0; i < length; ++i)
+    {
+        if(ans[i] == 'A') ++count_a;
+        else if(ans[i] == 'U') ++count_u;
+        else if(ans[i] == 'I') ++count_i;
+        else if(ans[i] == 'N') ++count_n;
+        else if(ans[i] == 'G') ++count_g;
+    }
+
+    if(count_i < 6) return false;
+    if(count_n < 5) return false;
+    if(count_g < 4) return false;
+    if(count_a < 4) return false;
+    if(count_u < 4) return false;
+    return true;
+}
+
+void printCode(int a1, int a2, int a3, int a4)
+{
+    int det = a1 * a4 - a2 * a3;
+    if(det == 0) return;
+    if(det > 0 && gcd(det, 26) != 1) return;
+
+    int b1, b2, o1, o2;
+    for(int i = 0; i < length; i += 2)
+    {
+        b1 = getNum(code[i]);
+        b2 = getNum(code[i + 1]);
+
+        o1 = (a1 * b1 + a2 * b2) % 26;
+        o2 = (a3 * b1 + a4 * b2) % 26;
+
+        ans[i] = getLetter(o1);
+        ans[i + 1] = getLetter(o2);
+
+
+    }
+    ans[length] = '\0';
+    if(analysis())
+    {
+        ++count;
+        printf("%d\n", count);
+        printf(ans);
+        printf("\n");
+    }
+}
+int main()
+{
+    freopen("in.txt", "w", stdout);
+    for(length = 0; code[length] != '\0'; ++length);
+
+    for(int i1 = 0; i1 < 26; ++i1)
+        for(int i2 = 0; i2 < 26; ++i2)
+            for(int i3 = 0; i3 < 26; ++i3)
+                for(int i4 = 0; i4 < 26; ++i4)
+                    printCode(i1, i2, i3, i4);
+
+    return 0;
+}
+
+    \end{lstlisting}
+    得到的结果为：\\
+    1\\
+    ZAIBENTENGZHIHOUWEIRUANYIJINGTUICHUXINYIDAICAOZUOXITONGG\\
+    2\\
+    KAGBGNMESGJHUHXUHEARBAIYQJINITLIEHUXINNIMARCPOWUEXWTYNVG\\
+    注意到第1个答案很符合拼音用法“zai ben teng zhi hou wei ruan yi jing tui chu xin yi dai cao zuo xi tong (哑字母g)”\\
+    翻译为汉语：“在奔腾之后微软已经推出新一代操作系统”\\
+\subsection*{解答法2}
 由于不知道任何加密信息，因此需要枚举所有可能的加密矩阵。\\
 但加密矩阵总数量级达到$26^4$即上亿级别，人工识别不现实，因此采用计算机过滤+人工识别方法\\
 具体做法如下:
@@ -273,8 +631,8 @@ CKYNOHKQMAXJQBHAZWUHDAOQWXIPQZBKMPUTIPVSWSBYXKKWQHADMBDM\\
 \item 对匹配位数高的字符串人工识别
 \end{enumerate}
 解密后的字符串为\\
-bazaibentengzhihouweiruanyijingtuichuxinyidaicaozuoxitongg\\
-对应汉语``八，在奔腾之后，微软已经推出新一代操作系统''\\
+zaibentengzhihouweiruanyijingtuichuxinyidaicaozuoxitongg\\
+对应汉语``在奔腾之后，微软已经推出新一代操作系统''\\
 C++代码：
 \begin{lstlisting}[language=C++]
 #include <cstdio>
@@ -332,7 +690,7 @@ int main()
         fscanf(fdict, "%s", dict[i]);
         length[i] = strlen(dict[i]);
     }
-    printf("%s", dict[0]);
+
     for (int i = 0; i < 25; ++i)
         for (int j = 0; j < 25 ; ++j)
             for (int k = 0; k < 25; ++k)
@@ -341,5 +699,8 @@ int main()
     return 0;
 }
 \end{lstlisting}
+\section*{任务分工}
+    任务1，任务2，任务5解法2，李青林\\
+    任务3，任务4，任务5解法1，郑辉煌\\
 \end{CJK*}
 \end{document}
